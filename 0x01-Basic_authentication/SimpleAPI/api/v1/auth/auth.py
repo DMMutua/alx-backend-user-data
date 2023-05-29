@@ -36,7 +36,20 @@ class Auth:
 
 
     def authorization_header(self, request=None) -> str:
-        """Returns `None` for Now"""
+        """Checks whether an Authorization Header Exists
+        in the `request` object header.
+        Returns:
+            - The Value of the header if it exists.
+            - None if Otherwise.
+        """
+
+        if request:
+            if 'Authorization' not in request.headers:
+                return None
+            else:
+                return request.headers['Authorization']
+
+
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
