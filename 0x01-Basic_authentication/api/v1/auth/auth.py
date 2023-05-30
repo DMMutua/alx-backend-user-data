@@ -18,10 +18,9 @@ class Auth:
         Returns:
             `True` if auth is required.`False` if otherwise.
         """
-        
         if excluded_paths is None or len(excluded_paths) == 0:
             return True
-        
+
         if path is None:
             return True
 
@@ -31,9 +30,7 @@ class Auth:
         for excluded_path in excluded_paths:
             if path == excluded_path:
                 return False
-        
         return True
-
 
     def authorization_header(self, request=None) -> str:
         """Checks whether an Authorization Header Exists
@@ -48,7 +45,6 @@ class Auth:
                 return None
             else:
                 return request.headers['Authorization']
-
 
         return None
 
