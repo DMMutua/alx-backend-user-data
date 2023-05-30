@@ -25,11 +25,13 @@ def not_found(error) -> str:
     """
     return jsonify({"error": "Not found"}), 404
 
+
 @app.errorhandler(401)
 def req_unauthorized(error) -> str:
-    """Request unouthorized 
+    """Request unouthorized
     """
     return jsonify({"error": "Unauthorized"}), 401
+
 
 @app.errorhandler(403)
 def forbidden(error) -> str:
@@ -37,16 +39,18 @@ def forbidden(error) -> str:
     """
     return jsonify({"error": "Forbidden"}), 403
 
+
 @app.before_request
 def filter_requests():
     """Filters each Request to the API
     """
 
     excluded_paths = ['/api/v1/status/',
-            'api/v1/unauthorized/',
-            'api/v1/forbidden/']
+                      'api/v1/unauthorized/',
+                      'api/v1/forbidden/']
 
-    if auth is None or auth.require_auth(request.path, excluded_paths) is False:
+    auth_req = auth.require_auth(request.path, excluded_paths)
+    if auth is None or auth_req is False:
         return
 
     else:
