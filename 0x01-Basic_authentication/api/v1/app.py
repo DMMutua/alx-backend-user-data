@@ -49,8 +49,8 @@ def filter_requests():
                       'api/v1/unauthorized/',
                       'api/v1/forbidden/']
 
-    auth_req = auth.require_auth(request.path, excluded_paths)
-    if auth is None or auth_req is False:
+    if auth is None or auth.require_auth(request.path,
+                                          excluded_paths) is False:
         return
 
     else:
