@@ -86,7 +86,7 @@ class BasicAuth(Auth):
 
     def current_user(self, request=None) -> TypeVar('User'):
         """Retrieves the `User` Instance of the Request"""
-        authorization_header = super.authorization_header(request)
+        authorization_header = self.authorization_header(request)
         if authorization_header is None:
             return None
 
