@@ -8,7 +8,6 @@ from models.user import User
 from api.v1.auth.auth import Auth
 
 
-
 class BasicAuth(Auth):
     """A Class that Implements Basic Authentication"""
     def extract_base64_authorization_header(self,
@@ -86,11 +85,13 @@ class BasicAuth(Auth):
 
     def current_user(self, request=None) -> TypeVar('User'):
         """Retrieves the `User` Instance of the Request"""
-        authorization_header = self.authorization_header(request)
-        if authorization_header is None:
+        auth_h = self.authorization_header(request)
+        if auth_h is None:
             return None
 
-        base64_header = self.extract_base64_authorization_header(authorization_header)
+        base64_header = self.extract_base64_authorization_header(
+                                                                 auth_h
+                                                                 )
         if base64_header is None:
             return None
 
