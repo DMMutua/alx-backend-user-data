@@ -2,9 +2,11 @@
 """Basic Authentication Implementation"""
 
 import base64
-from api.v1.auth.auth import Auth
-from models.user import User
+import sys
 from typing import TypeVar
+from models.user import User
+from api.v1.auth.auth import Auth
+
 
 
 class BasicAuth(Auth):
@@ -84,11 +86,11 @@ class BasicAuth(Auth):
 
     def current_user(self, request=None) -> TypeVar('User'):
         """Retrieves the `User` Instance of the Request"""
-        authorization_header = self.authorization_header(request)
+        authorization_header = super.authorization_header(request)
         if authorization_header is None:
             return None
 
-        base64_header = self.extract_base64_authorization(authorization_header)
+        base64_header = self.extract_base64_authorization_header(authorization_header)
         if base64_header is None:
             return None
 
