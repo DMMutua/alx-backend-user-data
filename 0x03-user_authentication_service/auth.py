@@ -111,14 +111,17 @@ class Auth:
         self._db._session.commit()
         return truncated_session_id
 
-    def get_user_from_session_id(self, session_id: Optional[str]) -> Optional[User]:
+    def get_user_from_session_id(self,
+                                 session_id: Optional[str]
+                                 ) -> Optional[User]:
         """Returns the corresponding User for a given session ID.
 
         Args:
             session_id (str): The session ID.
 
         Returns:
-            User: The User object corresponding to the session ID, or None if not found.
+            User: The User object corresponding to the session ID.
+            None if not found.
         """
         if not session_id:
             return None
