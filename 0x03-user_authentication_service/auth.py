@@ -2,6 +2,7 @@
 
 
 import bcrypt
+import uuid
 from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
@@ -72,3 +73,12 @@ class Auth:
             pass
 
         return False
+
+    @staticmethod
+    def _generate_uuid() -> str:
+        """Generates a new UUID and returns it as a string representation.
+
+        Returns:
+            str: The string representation of the generated UUID.
+        """
+        return str(uuid.uuid4())
