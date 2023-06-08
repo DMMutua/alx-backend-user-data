@@ -81,4 +81,30 @@ class Auth:
         Returns:
             str: The string representation of the generated UUID.
         """
-        return str(uuid.uuid4())
+        random = str(uuid.uuid4())
+        return random
+
+    def create_session(self, email: str) -> str:
+        """Creates a new session for the user and returns the session ID.
+
+        Args:
+            email (str): The email of the user.
+
+        Returns:
+            str: The session ID.
+
+        Raises:
+            NoResultFound: If no user is found with the given email.
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+            if not user:
+                raise NoResultFound
+        except NoResultFound:
+            raise
+
+        session_id = self._generate_uuid()
+        truncated_session_id = session_id[:255]
+        user.session_id = truncated_session_id
+        self._db._session.commit()
+        return truncated_session_id
