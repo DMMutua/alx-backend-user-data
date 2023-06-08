@@ -28,7 +28,7 @@ class Auth:
 
         hashed_pw = self._hash_password(password)
         user = self._db.add_user(email=email,
-                                  hashed_password=hashed_pw)
+                                 hashed_password=hashed_pw)
         return user
 
     @staticmethod
