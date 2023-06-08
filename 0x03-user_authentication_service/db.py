@@ -57,3 +57,25 @@ class DB:
             raise
         except NoResultFound:
             raise
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """Updates the user's attributes and commits changes to the database.
+        Raises:
+            ValueError: If an argument does not correspond to a user attribute.
+        Else Returns:
+            None
+        """
+        user = self.find_user_by(id=user_id)
+
+        for attr, value in kwargs.items():
+            if hasattr(user, attr):
+                setattr(user, attr, value)
+            else:
+                raise ValueError
+
+        try:
+            self._session.commit()
+
+        except InvalidRequestError:
+            self.__session.rollback()
+            raise
