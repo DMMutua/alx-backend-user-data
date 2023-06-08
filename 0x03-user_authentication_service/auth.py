@@ -5,6 +5,7 @@ import bcrypt
 import uuid
 from db import DB
 from user import User
+from typing import Optional
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
 
@@ -109,3 +110,22 @@ class Auth:
         user.session_id = truncated_session_id
         self._db._session.commit()
         return truncated_session_id
+
+    def get_user_from_session_id(self, session_id: Optional[str]) -> Optional[User]:
+        """Returns the corresponding User for a given session ID.
+
+        Args:
+            session_id (str): The session ID.
+
+        Returns:
+            User: The User object corresponding to the session ID, or None if not found.
+        """
+        if not session_id:
+            return None
+
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+            return user
+
+        except NoResultFound:
+            return None
