@@ -67,7 +67,7 @@ def logout():
         AUTH.destroy_session(user.id)
         response = make_response(jsonify({"message": "logged out"}))
         response.set_cookie("session_id", expires=0)
-        return response
+        return redirect("/")
     else:
         abort(403)
 
