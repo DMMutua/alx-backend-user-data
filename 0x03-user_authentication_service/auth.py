@@ -5,6 +5,7 @@ import bcrypt
 from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 
 
 class Auth:
@@ -24,6 +25,9 @@ class Auth:
             if existing_user:
                 raise ValueError(f"User {email} already exists")
         except NoResultFound:
+            pass
+
+        except InvalidRequestError:
             pass
 
         hashed_pw = self._hash_password(password)
@@ -62,6 +66,9 @@ class Auth:
                                        user.hashed_password):
                 return True
         except NoResultFound:
+            pass
+
+        except InvalidRequestError:
             pass
 
         return False
