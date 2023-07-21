@@ -1,11 +1,32 @@
 #!/usr/bin/env python3
-"""Regex-ing"""
+"""User Data Control"""
+
+import logging
 import re
+
 
 def filter_datum(fields: list[str], redaction: str,
                  message: str, separator: str) -> str:
-    """returns A log message obfuscated
-   """
+    """Returns A log message obfuscated.
+    """
     pattern = r"\b(" + "|".join(fields) + r")=[^" + separator + r"]*"
     return re.sub(pattern, lambda match: match.group(1) + "=" + redaction, message)
-    
+
+
+class RedactingFormatter(logging.Formatter):
+    """Redacting Formatter class."""
+
+    REDACTION = "***"
+    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
+    SEPARATOR = ";"
+
+    def __init__(self, fields: list[str]):
+        """Initialization for the redacting formatter class"""
+        super(RedactingFormatter, self).__init__(self.FORMAT)
+        self.fields = fields
+
+
+    def format(self, record: logging.LogRecord) -> str:
+        """Filters Values in incoming log records using `filter_datum`"""
+        log_message = super().format(record)
+        return filter_datum(self.fields, self.REDACTION, log_message, self.SEPARATOR)
