@@ -10,7 +10,7 @@ def filter_datum(fields: list[str], redaction: str,
     """Returns A log message obfuscated.
     """
     pattern = r"\b(" + "|".join(fields) + r")=[^" + separator + r"]*"
-    return re.sub(pattern, lambda match: match.group(1) + "=" + 
+    return re.sub(pattern, lambda match: match.group(1) + "=" +
                   redaction, message)
 
 
@@ -32,7 +32,9 @@ class RedactingFormatter(logging.Formatter):
         return filter_datum(self.fields, self.REDACTION,
                             log_message, self.SEPARATOR)
 
+
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+
 
 def get_logger() -> logging.Logger:
     """Returns a logging.Logger object with specific settings."""
